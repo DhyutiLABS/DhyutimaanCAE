@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: "DhyutimaanMesh: A Claude-native skill bundle for CAD and meshing in CFD and computational mechanics"
+message: "If you use this bundle in your research, please cite it as below."
+type: software
+authors:
+  - family-names: "Rahul"
+    affiliation: "DhyutiLABS"
+repository-code: "https://github.com/DhyutiLABS/DhyutimaanMesh"
+url: "https://github.com/DhyutiLABS/DhyutimaanMesh"
+abstract: >
+  DhyutimaanMesh is a four-skill agentic research bundle for the Claude family of
+  large language models, automating CAD-to-mesh workflows for CFD and computational
+  mechanics studies. The bundle is method-aware (FEM, FDM, FVM, IBM, overset,
+  cut-cell, DG, spectral element), uses only open-source tools (Gmsh, Netgen,
+  cfMesh, snappyHexMesh, MMG, TIOGA, AMReX, OpenCASCADE, CadQuery, build123d),
+  and enforces falsifiable problem specs with quality envelopes and reference
+  comparisons.
+keywords:
+  - mesh-generation
+  - computational-fluid-dynamics
+  - finite-element-method
+  - finite-volume-method
+  - immersed-boundary-method
+  - overset-mesh
+  - cut-cell
+  - cad
+  - open-source
+  - agentic-research
+  - claude
+license: MIT
+version: 0.1.0
+date-released: "2026-06-06"

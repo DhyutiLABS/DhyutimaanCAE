@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dhyutilabs.github.io/DhyutimaanMesh/verification.schema.json",
+  "title": "DhyutimaanMesh verification.json",
+  "description": "Schema for the verification.json artifact produced by mesh-scaffold and consumed by mesh-analysis-report.",
+  "type": "object",
+  "required": [
+    "spec_path",
+    "target_method",
+    "target_solver",
+    "tool_versions",
+    "quality_envelope",
+    "hypotheses",
+    "success_criteria_met",
+    "provenance"
+  ],
+  "properties": {
+    "spec_path": {
+      "type": "string",
+      "description": "Relative path to the consumed problem-spec.md."
+    },
+    "target_method": {
+      "type": "string",
+      "enum": ["FEM", "FDM", "FVM", "IBM", "Overset", "CutCell", "DG", "SE"]
+    },
+    "target_solver": {
+      "type": "string",
+      "description": "Solver name and application (e.g. 'OpenFOAM:simpleFoam', 'FEniCSx', 'AMReX:Nyx', 'MFEM:ex1', 'NGSolve')."
+    },
+    "tool_versions": {
+      "type": "object",
+      "description": "Map of tool name to resolved version string at run time.",
+      "additionalProperties": { "type": "string" }
+    },
+    "git_commit": {
+      "type": "string",
+      "description": "Short SHA of the scaffold repository at run time."
+    },
+    "geometry_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "analytic", "computed", "rel_error", "passes"],
+        "properties": {
+          "name": { "type": "string" },
+          "analytic": { "type": "number" },
+          "computed": { "type": "number" },
+          "rel_error": { "type": "number" },
+          "passes": { "type": "boolean" }
+        }
+      }
+    },
+    "quality_envelope": {
+      "type": "object",
+      "description": "Per-metric threshold, measured value, and pass/fail.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["threshold", "measured", "passes"],
+        "properties": {
+          "threshold": { "type": "number" },
+          "measured": { "type": "number" },
+          "passes": { "type": "boolean" },
+          "percentile_99_9": { "type": "number" },
+          "worst_cell_location": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        }
+      }
+    },
+    "boundary_layer": {
+      "type": "object",
+      "properties": {
+        "target_yplus": { "type": "number" },
+        "fraction_below_target": { "type": "number" },
+        "layers_requested": { "type": "integer" },
+        "layers_achieved_median": { "type": "integer" },
+        "collapse_fraction": { "type": "number" },
+        "passes": { "type": "boolean" }
+      }
+    },
+    "grid_convergence": {
+      "type": "object",
+      "properties": {
+        "levels": { "type": "array", "items": { "type": "string" } },
+        "refinement_ratio": { "type": "number" },
+        "quantity": { "type": "string" },
+        "values": { "type": "array", "items": { "type": "number" } },
+        "observed_order": { "type": "number" },
+        "expected_order": { "type": "number" },
+        "gci_fine": { "type": "number" },
+        "asymptotic": { "type": "boolean" }
+      }
+    },
+    "benchmark_comparison": {
+      "type": "object",
+      "properties": {
+        "reference": { "type": "string" },
+        "quantity": { "type": "string" },
+        "computed": { "type": "number" },
+        "rel_error": { "type": "number" },
+        "passes": { "type": "boolean" }
+      }
+    },
+    "overset_audit": {
+      "type": "object",
+      "properties": {
+        "orphan_cells": { "type": "integer" },
+        "fringe_cells": { "type": "integer" },
+        "overlap_mass_imbalance": { "type": "number" }
+      }
+    },
+    "cut_cell_audit": {
+      "type": "object",
+      "properties": {
+        "min_eb_volume_fraction": { "type": "number" },
+        "small_cells_merged": { "type": "integer" },
+        "sdf_max_error_near_surface": { "type": "number" }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "statement", "result"],
+        "properties": {
+          "id": { "type": "integer" },
+          "statement": { "type": "string" },
+          "result": { "type": "string", "enum": ["confirmed", "refuted", "inconclusive"] },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "success_criteria_met": { "type": "boolean" },
+    "provenance": {
+      "type": "object",
+      "required": ["host", "arch", "python", "spec_hash", "scaffold_hash"],
+      "properties": {
+        "host": { "type": "string" },
+        "arch": { "type": "string" },
+        "python": { "type": "string" },
+        "spec_hash": { "type": "string" },
+        "scaffold_hash": { "type": "string" },
+        "wall_time_s": { "type": "number" },
+        "peak_memory_mb": { "type": "number" }
+      }
+    }
+  }
+}
